@@ -1,10 +1,16 @@
 import express from 'express'
+import { publicRouter } from './api/router'
 
 const app = express()
-app.get('/',(req,res)=>{
-    res.send("Hello world")
+app.use(express.json())
+
+app.use("/api/public", publicRouter)
+
+app.use("*", (_, res) => {
+    res.status(404).send("404 route not found")
 })
 
-app.listen(8000,()=>{
-    console.log('app2 is working')
+
+app.listen(8000, () => {
+    console.log('server is started')
 })
