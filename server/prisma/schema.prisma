@@ -14,10 +14,64 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  email String  @unique
-  name2  String @default("default_value")
-  name3  String @default("default_value2")
+  id          Int     @id @default(autoincrement())
+  firstName   String 
+  LastName    String
+  email       String  @unique
+  role        Role    @default(USER)
+  password    String
+  is_approved Boolean @default(false)
+  is_blocked  Boolean @default(false)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  address Address[]
+  profile Profile[]
+
+  appointment Appointment[]
+  category    Category[]
+}
+
+model Address {
+  id       Int    @id @default(autoincrement())
+  address  String
+  zip_code String
+  city     String
+  country  String
+  user     User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id  Int
+}
+
+model Profile {
+  id          Int    @id @default(autoincrement())
+  specialty   String
+  Image       String
+  user_id     Int
+  user        User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  availablity String
+}
+
+model Appointment {
+  id       Int      @id @default(autoincrement())
+  type     String
+  date     DateTime
+  time     DateTime
+  duration String
+
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id Int
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id Int
+}
+
+enum Role {
+  USER
+  ADMIN
+  DOCTOR
 }

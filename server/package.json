@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc -b",
     "start": "node dist/index.js",
-    "dev": "tsc -w & nodemon dist/index.js"
+    "dev": "tsc -w & nodemon dist/index.js",
+    "generate": "npx prisma generate",
+    "push": "npx prisma db push"
   },
   "keywords": [],
   "author": "",
