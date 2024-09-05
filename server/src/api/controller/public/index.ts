@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { publicService } from '../../../services';
+import { ERROR_MESSAGE } from '../../../utils/varialble';
 
 export const create_user = async (req: Request, res: Response) => {
     try {
@@ -8,9 +9,13 @@ export const create_user = async (req: Request, res: Response) => {
         res.status(200).send({ message: "User Created" })
     } catch (error: Error | any) {
         console.log(error, 'create user')
-        if (error.message) {
+        if (error.message === "P2002") {
+            res.status(500).send({ message: `Email ${ERROR_MESSAGE.ALREADY_EXISTS}` })
+        }
+        else if (error.message) {
             res.status(500).send({ message: error.message })
-        } else {
+        }
+        else {
             res.status(500).send({ message: "Something Went Wrong" })
         }
     }

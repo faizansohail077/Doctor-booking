@@ -13,8 +13,7 @@ export const create_user = async (first_name: string, last_name: string, email: 
             }
         })
         return user
-    } catch (error) {
-        console.log(error, 'create user')
-        return error
+    } catch (error:any) { 
+        throw new Error(error.code)
     }
 }

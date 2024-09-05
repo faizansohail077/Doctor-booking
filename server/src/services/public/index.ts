@@ -1,5 +1,7 @@
 import Joi from "joi"
 import { publicRepository } from "../../database/repository";
+import bcrypt from 'bcrypt'
+const saltRounds = 10;
 
 export const create_user = async (first_name: string, last_name: string, email: string, password: string) => {
     const schema = Joi.object({
@@ -18,8 +20,9 @@ export const create_user = async (first_name: string, last_name: string, email: 
         email: Joi.string()
             .email().required()
     })
-    const { error, value } = schema.validate({ first_name, last_name, email, password });
+    const { error, value } = schema.validate({ first_name, last_name, email, password }); 
     if (error) throw new Error(error.details[0].message);
-    const user = await publicRepository.create_user(value.first_name, value.last_name, value.email, value.password)
+    const hash = await bcrypt.hash(password, saltRounds)
+    const user = await publicRepository.create_user(value.first_name, value.last_name, value.email, hash)
     return user
 }
