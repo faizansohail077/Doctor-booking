@@ -5,8 +5,8 @@ import { ERROR_MESSAGE } from '../../../utils/varialble';
 export const create_user = async (req: Request, res: Response) => {
     try {
         const { first_name, last_name, email, password } = req.body;
-        await publicService.create_user(first_name, last_name, email, password)
-        res.status(200).send({ message: "User Created" })
+        const user = await publicService.create_user(first_name, last_name, email, password)
+        res.status(200).send({ message: "User Created", ...user })
     } catch (error: Error | any) {
         console.log(error, 'create user')
         if (error.message === "P2002") {

@@ -1,4 +1,4 @@
-const ENV = {
+export const ENV = {
     SECRET:"mysecretkey",
 }
 
