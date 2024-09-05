@@ -3,5 +3,6 @@ export const ENV = {
 }
 
 export const ERROR_MESSAGE = {
-    "ALREADY_EXISTS": "Already Exists",
+    ALREADY_EXISTS: "Already Exists",
+    INVALID_CREDENTIALS: "Invalid Credentials"
 }
