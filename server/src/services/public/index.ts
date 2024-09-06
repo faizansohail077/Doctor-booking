@@ -4,10 +4,11 @@ import Joi from "joi"
 import bcrypt from 'bcrypt'
 import { ERROR_MESSAGE } from "../../utils/varialble";
 import { generate_token } from "../../utils/helpers";
+import { Role } from "@prisma/client";
 
 const saltRounds = 10;
 
-export const create_user = async (first_name: string, last_name: string, email: string, password: string) => {
+export const create_user = async ({ first_name, last_name, email, password, role }: { first_name: string, last_name: string, email: string, password: string, role?: Role }) => {
 
     const schema = Joi.object({
         first_name: Joi.string().min(3).max(30).required(),
@@ -21,7 +22,7 @@ export const create_user = async (first_name: string, last_name: string, email: 
     if (error) throw new Error(error.details[0].message);
 
     const hash = await bcrypt.hash(password, saltRounds)
-    const user = await publicRepository.create_user(value.first_name, value.last_name, value.email, hash)
+    const user = await publicRepository.create_user(value.first_name, value.last_name, value.email, hash, role)
 
     const token = generate_token(user);
 
