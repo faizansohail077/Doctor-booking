@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { publicService } from '../../../services';
-import { ERROR_MESSAGE } from '../../../utils/varialble';
+import { ERROR_MESSAGE } from '../../../utils/variable';
 
 export const create_user = async (req: Request, res: Response) => {
     try {

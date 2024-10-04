@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { ENV } from "./varialble";
+import { ENV } from "./variable";
 import jwt from 'jsonwebtoken'
 
 export const generate_token = (user: User) => {

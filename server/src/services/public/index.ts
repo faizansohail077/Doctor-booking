@@ -2,7 +2,7 @@ import { publicRepository } from "../../database/repository";
 
 import Joi from "joi"
 import bcrypt from 'bcrypt'
-import { ERROR_MESSAGE } from "../../utils/varialble";
+import { ERROR_MESSAGE } from "../../utils/variable";
 import { generate_token } from "../../utils/helpers";
 import { Role } from "@prisma/client";
 
