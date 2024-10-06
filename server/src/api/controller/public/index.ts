@@ -35,3 +35,21 @@ export const login_user = async (req: Request, res: Response) => {
         }
     }
 }
+
+export const create_doctor = async (req: Request, res: Response) => {
+    try {
+        const user = await publicService.create_doctor(req.body)
+        res.status(200).send({ message: "Doctor Created", ...user })
+    } catch (error: Error | any) {
+        console.log(error, 'create user')
+        if (error.message === "P2002") {
+            res.status(500).send({ message: `Email ${ERROR_MESSAGE.ALREADY_EXISTS}` })
+        }
+        else if (error.message) {
+            res.status(500).send({ message: error.message })
+        }
+        else {
+            res.status(500).send({ message: "Something Went Wrong" })
+        }
+    }
+}
