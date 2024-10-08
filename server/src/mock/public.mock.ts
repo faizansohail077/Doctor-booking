@@ -1,6 +1,6 @@
 export const mock_create_user = {
     first_name: "first name",
     last_name: "last_name",
-    email: "maazaasd2@faizan.com",
+    email: `john${Date.now()}@example.com`,
     password: "string",
 }
