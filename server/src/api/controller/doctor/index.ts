@@ -22,7 +22,7 @@ export const get_doctor_profile = async (req: any, res: Response) => {
 export const create_doctor_address = async (req: any, res: Response) => {
     try {
 
-        const request = { ...req.body, ...req.user }
+        const request = { ...req.body, user_id:req.user.id }
         const doctor = await doctorService.create_doctor_address_service(request)
         res.status(200).send({ message: "Doctor Address", ...doctor })
 

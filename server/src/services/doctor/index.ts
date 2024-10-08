@@ -17,7 +17,7 @@ export const get_doctor_profile_service = async ({ user_id }: { user_id: number 
 }
 
 export const create_doctor_address_service = async ({ address, zip_code, city, country, longitude, latitude, user_id }: { latitude: number, longitude: number, address: string, zip_code: string, city: string, country: string, user_id: number }) => {
-
+console.log(user_id,'user_id')
     const schema = Joi.object({
         address: Joi.string().required(),
         zip_code: Joi.string().required(),
