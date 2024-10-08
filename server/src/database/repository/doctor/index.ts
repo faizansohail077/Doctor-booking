@@ -31,3 +31,55 @@ export const create_doctor_address = async ({ address, zip_code, city, country, 
         throw new Error(error.code ? error.code : error.message)
     }
 }
+
+export const update_doctor_address = async ({ id, address, zip_code, city, country, longitude, latitude, user_id }: { latitude: number, longitude: number, address: string, zip_code: string, city: string, country: string, user_id: number, id: number }) => {
+    try {
+        const address_exist = await prisma.address.findFirst({
+            where: {
+                id
+            }
+        })
+
+        if (!address_exist) throw new Error('Address not found')
+        if (address_exist?.user_id !== user_id) throw new Error('Invalid Credentials')
+
+        const user = await prisma.address.update({
+            where: {
+                id,
+                user_id
+            },
+            data: {
+                address, zip_code, city, country, longitude, latitude, user_id
+            },
+            include: {
+                user: true
+            }
+        })
+        return user
+    } catch (error: any) {
+        throw new Error(error.code ? error.code : error.message)
+    }
+}
+
+export const delete_doctor_address = async ({ id, user_id }: { user_id: number, id: number }) => {
+    try {
+        const address_exist = await prisma.address.findFirst({
+            where: {
+                id
+            }
+        })
+
+        if (!address_exist) throw new Error('Address not found')
+        if (address_exist?.user_id !== user_id) throw new Error('Invalid Credentials')
+
+        const user = await prisma.address.delete({
+            where: {
+                id,
+                user_id
+            }
+        })
+        return user
+    } catch (error: any) {
+        throw new Error(error.code ? error.code : error.message)
+    }
+}
