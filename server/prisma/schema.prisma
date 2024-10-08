@@ -26,8 +26,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  address Address[]
-  profile Profile[]
+  address Address?
+  profile Profile?
 
   appointment Appointment[]
   category    Category[]
@@ -40,7 +40,7 @@ model Address {
   city     String
   country  String
   user     User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id  Int
+  user_id  Int @unique
   
   longitude   Float
   latitude    Float
@@ -55,7 +55,7 @@ model Profile {
   id          Int    @id @default(autoincrement())
   specialty   String
   image       String
-  user_id     Int
+  user_id     Int @unique
   user        User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   availablity String
 }

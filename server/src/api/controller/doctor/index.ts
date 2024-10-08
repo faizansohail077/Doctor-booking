@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { doctorService } from '../../../services';
+import { ERROR_MESSAGE } from '../../../utils/variable';
 
 export const get_doctor_profile = async (req: any, res: Response) => {
     try {
@@ -28,6 +29,9 @@ export const create_doctor_address = async (req: any, res: Response) => {
 
     } catch (error: Error | any) {
         console.log(error, 'create_doctor_address controller')
+        if (error.message === "P2002") { 
+            res.status(500).send({ message: `Address ${ERROR_MESSAGE.ALREADY_EXISTS}` })
+        }
         if (error.message) {
             res.status(500).send({ message: error.message })
         }
