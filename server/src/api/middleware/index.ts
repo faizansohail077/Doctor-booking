@@ -4,11 +4,13 @@ import { ENV } from '../../utils/variable';
 import { Role } from '@prisma/client';
 
 export const auth_middleware = async (req: any, res: Response, next: NextFunction) => {
-    const token = req.headers['authorization'];
+    const authHeader = req.headers['authorization'];
 
-    if (!token) {
-        return res.status(403).send('A token is required for authentication');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(403).send('A valid token is required for authentication');
     }
+
+    const token = authHeader.split(' ')[1];
 
     try {
         const decoded = jwt.verify(token, ENV.SECRET);
@@ -18,7 +20,7 @@ export const auth_middleware = async (req: any, res: Response, next: NextFunctio
     }
 
     return next();
-}
+};
 
 export const admin_middleware = async (req: any, res: Response, next: NextFunction) => {
     if (req.user.role !== Role.ADMIN) {

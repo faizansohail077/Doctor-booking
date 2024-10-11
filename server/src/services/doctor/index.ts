@@ -16,6 +16,8 @@ export const get_doctor_profile_service = async ({ user_id }: { user_id: number 
     return { user }
 }
 
+// doctor address
+
 export const create_doctor_address_service = async ({ address, zip_code, city, country, longitude, latitude, user_id }: { latitude: number, longitude: number, address: string, zip_code: string, city: string, country: string, user_id: number }) => {
 
     const schema = Joi.object({
@@ -60,6 +62,52 @@ export const update_doctor_address_service = async ({ id, address, zip_code, cit
 export const delete_doctor_address_service = async ({ id, user_id }: { id: number, user_id: number }) => {
 
     const user = await doctorRepository.delete_doctor_address({ id, user_id })
+
+    return { user }
+}
+
+// doctor profile
+export const create_doctor_profile_service = async ({ specialty, image, user_id }: { image: string, specialty: string, user_id: number }) => {
+
+    const schema = Joi.object({
+        specialty: Joi.string().required(),
+        image: Joi.string().required(),
+    })
+
+
+    const { error } = schema.validate({ specialty, image });
+
+    if (error) throw new Error(error.details[0].message);
+
+    const user = await doctorRepository.create_doctor_profile({ specialty, image, user_id })
+
+    return { user }
+}
+
+export const update_doctor_profile_service = async ({ id, address, zip_code, city, country, longitude, latitude, user_id }: { id: number, latitude: number, longitude: number, address: string, zip_code: string, city: string, country: string, user_id: number }) => {
+
+    const schema = Joi.object({
+        address: Joi.string().required(),
+        zip_code: Joi.string().required(),
+        city: Joi.string().required(),
+        country: Joi.string().required(),
+        longitude: Joi.number().required(),
+        latitude: Joi.number().required()
+    })
+
+    const { error, value } = schema.validate({ address, zip_code, city, country, longitude, latitude });
+
+    if (error) throw new Error(error.details[0].message);
+
+    const user = await doctorRepository.update_doctor_profile({ id, address, zip_code, city, country, longitude, latitude, user_id })
+
+    return { user }
+}
+
+
+export const delete_doctor_profile_service = async ({ id, user_id }: { id: number, user_id: number }) => {
+
+    const user = await doctorRepository.delete_doctor_profile({ id, user_id })
 
     return { user }
 }
