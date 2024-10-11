@@ -31,7 +31,7 @@ export const create_doctor_address = async (req: any, res: Response) => {
 
     } catch (error: Error | any) {
         console.log(error, 'create_doctor_address controller')
-        if (error.message === "P2002") { 
+        if (error.message === "P2002") {
             res.status(500).send({ message: `Address ${ERROR_MESSAGE.ALREADY_EXISTS}` })
         }
         if (error.message) {
@@ -81,14 +81,18 @@ export const delete_doctor_address = async (req: any, res: Response) => {
 // doctor profile
 export const create_doctor_profile = async (req: any, res: Response) => {
     try {
-
-        const request = { ...req.body, user_id: req.user.id }
+        const request = {
+            specialty: req.body.specialty,
+            image: req.file,
+            user_id: req.user.id
+        };
         const doctor = await doctorService.create_doctor_profile_service(request)
-        res.status(200).send({ message: "Doctor Address", ...doctor })
+        // res.status(200).send({ message: "Doctor Profile", ...doctor })
+        res.status(200).send({ message: "Doctor Profile" })
 
     } catch (error: Error | any) {
         console.log(error, 'create_doctor_address controller')
-        if (error.message === "P2002") { 
+        if (error.message === "P2002") {
             res.status(500).send({ message: `Address ${ERROR_MESSAGE.ALREADY_EXISTS}` })
         }
         if (error.message) {
