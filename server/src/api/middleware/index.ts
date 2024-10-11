@@ -13,7 +13,7 @@ export const auth_middleware = async (req: any, res: Response, next: NextFunctio
     const token = authHeader.split(' ')[1];
 
     try {
-        const decoded = jwt.verify(token, ENV.SECRET);
+        const decoded = jwt.verify(token, ENV.JWT_SECRET!);
         req.user = decoded;
     } catch (err) {
         return res.status(401).send('Invalid Token');

@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { doctorController } from '../../controller';
 import multer from 'multer'
-const storage = multer.memoryStorage();
 
 const upload = multer({
-    storage, limits: {
+    dest: 'uploads/',
+    limits: {
         fileSize: 2 * 1024 * 1024
     }
 })
@@ -19,7 +19,6 @@ router.delete('/:id/delete_doctor_address', doctorController.delete_doctor_addre
 // profile
 
 router.post('/create_doctor_profile', upload.single('profile_image'), doctorController.create_doctor_profile);
-router.put('/:id/update_doctor_profile', doctorController.update_doctor_profile);
-router.delete('/:id/delete_doctor_profile', doctorController.delete_doctor_profile);
+router.put('/:id/update_doctor_profile',upload.single('profile_image'), doctorController.update_doctor_profile);
 
 export { router as doctorRouter };
