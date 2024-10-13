@@ -128,3 +128,79 @@ export const update_doctor_profile = async (req: any, res: Response) => {
     }
 }
 
+// availability 
+
+export const get_doctor_availability = async (req: any, res: Response) => {
+    try {
+        const { date } = req.query
+        const request = { date, user_id: req.user.id }
+        const doctor = await doctorService.get_doctor_availability_service(request)
+        res.status(200).send({ message: "Doctor Availability", ...doctor })
+
+    } catch (error: Error | any) {
+        console.log(error, 'get_doctor_availability controller')
+
+        if (error.message) {
+            res.status(500).send({ message: error.message })
+        }
+        else {
+            res.status(500).send({ message: "Something Went Wrong" })
+        }
+    }
+}
+
+export const create_doctor_availability = async (req: any, res: Response) => {
+    try {
+
+        const request = { ...req.body, user_id: req.user.id }
+        const doctor = await doctorService.create_doctor_availability_service(request)
+        res.status(200).send({ message: "Doctor Availability", ...doctor })
+
+    } catch (error: Error | any) {
+        console.log(error, 'create_doctor_availability controller')
+        if (error.message === "P2002") {
+            res.status(500).send({ message: `Availability ${ERROR_MESSAGE.ALREADY_EXISTS}` })
+        }
+        if (error.message) {
+            res.status(500).send({ message: error.message })
+        }
+        else {
+            res.status(500).send({ message: "Something Went Wrong" })
+        }
+    }
+}
+
+
+export const update_doctor_availability = async (req: any, res: Response) => {
+    try {
+        const request = { ...req.body, user_id: req.user.id, id: Number(req.params.id) }
+        const doctor = await doctorService.update_doctor_availability_service(request)
+        res.status(200).send({ message: "Doctor Availability", ...doctor })
+
+    } catch (error: Error | any) {
+        console.log(error, 'update_doctor_availability controller')
+        if (error.message) {
+            res.status(500).send({ message: error.message })
+        }
+        else {
+            res.status(500).send({ message: "Something Went Wrong" })
+        }
+    }
+}
+
+export const delete_doctor_availability = async (req: any, res: Response) => {
+    try {
+        const request = { user_id: req.user.id, id: Number(req.params.id) }
+        const doctor = await doctorService.delete_doctor_availability_service(request)
+        res.status(200).send({ message: "Availability  Deleted", ...doctor })
+
+    } catch (error: Error | any) {
+        console.log(error, 'delete_doctor_availability controller')
+        if (error.message) {
+            res.status(500).send({ message: error.message })
+        }
+        else {
+            res.status(500).send({ message: "Something Went Wrong" })
+        }
+    }
+}

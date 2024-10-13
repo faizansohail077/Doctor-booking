@@ -26,7 +26,7 @@ model User {
   appointment Appointment[]
   category    Category[]
 
-  availablity Availability[]
+  availability Availability[]
 }
 
 model Address {
@@ -55,11 +55,13 @@ model Profile {
 
 model Availability {
   id      Int    @id @default(autoincrement())
-  day     String // E.g., Monday, Tuesday
-  start   String // Start time, e.g., 10:00 AM
-  end     String // End time, e.g., 5:00 PM
-  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  date    DateTime // Specific date for the availability
+  day     WeekDay   // Day of the week, e.g., Monday
+  start   String   // Start time, e.g., 10:00 AM
+  end     String   // End time, e.g., 5:00 PM
+  user    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int
+  booked  Boolean  @default(false)
 }
 
 model Appointment {
@@ -84,4 +86,14 @@ enum Role {
   PATIENT
   ADMIN
   DOCTOR
+}
+
+enum WeekDay {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
 }

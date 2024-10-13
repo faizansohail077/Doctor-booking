@@ -21,4 +21,10 @@ router.delete('/:id/delete_doctor_address', doctorController.delete_doctor_addre
 router.post('/create_doctor_profile', upload.single('profile_image'), doctorController.create_doctor_profile);
 router.put('/:id/update_doctor_profile',upload.single('profile_image'), doctorController.update_doctor_profile);
 
+// availability
+router.get('/get_doctor_availability', doctorController.get_doctor_availability);
+router.post('/create_doctor_availability', doctorController.create_doctor_availability);
+router.put('/:id/update_doctor_availability', doctorController.update_doctor_availability);
+router.delete('/:id/delete_doctor_availability', doctorController.delete_doctor_availability);
+
 export { router as doctorRouter };

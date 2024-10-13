@@ -1,6 +1,7 @@
 import Joi from "joi"
 import { doctorRepository } from "../../database/repository";
 import { upload_to_cloudinary } from "../../utils/helpers";
+import { WeekDay } from "@prisma/client";
 
 
 export const get_doctor_profile_service = async ({ user_id }: { user_id: number }) => {
@@ -111,4 +112,67 @@ export const update_doctor_profile_service = async ({ id, specialty, image, user
     return { user }
 }
 
+// doctor availability
 
+export const get_doctor_availability_service = async ({ date, user_id }: { date: Date, user_id: number }) => {
+
+    const schema = Joi.object({
+        date: Joi.date().required(),
+    })
+
+    const { error } = schema.validate({ date });
+
+    if (error) throw new Error(error.details[0].message);
+
+    const availability = await doctorRepository.get_doctor_availability({ date, user_id })
+    const dayOrder = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+    availability.sort((a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day));
+
+    return { availability }
+}
+
+
+export const create_doctor_availability_service = async ({ date, day, start, end, user_id }: { date: Date, day: WeekDay, start: string, end: string, user_id: number }) => {
+
+    const schema = Joi.object({
+        date: Joi.date().required(),
+        day: Joi.string().required(),
+        start: Joi.string().required(),
+        end: Joi.string().required(),
+    })
+
+    const { error } = schema.validate({ date, day, start, end });
+
+    if (error) throw new Error(error.details[0].message);
+
+    const user = await doctorRepository.create_doctor_availability({ date, day, start, end, user_id })
+
+    return { user }
+}
+
+export const update_doctor_availability_service = async ({ id, date, day, start, end, user_id }: { id: number, date: Date, day: WeekDay, start: string, end: string, user_id: number }) => {
+
+    const schema = Joi.object({
+        date: Joi.date().required(),
+        day: Joi.string().required(),
+        start: Joi.string().required(),
+        end: Joi.string().required(),
+    })
+
+
+    const { error } = schema.validate({ date, day, start, end });
+
+    if (error) throw new Error(error.details[0].message);
+
+    const user = await doctorRepository.update_doctor_availability({ id, date, day, start, end, user_id })
+
+    return { user }
+}
+
+
+export const delete_doctor_availability_service = async ({ id, user_id }: { id: number, user_id: number }) => {
+
+    const user = await doctorRepository.delete_doctor_availability({ id, user_id })
+
+    return { user }
+}
